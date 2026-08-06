@@ -3,9 +3,9 @@
 This is a data-analysis pipeline that generates valuable insights about the progress evolution of strength training exercises using SQL, Machine Learning and visualisation tools. 
 The user provides a .csv file containing chronological logs of workout sessions and the application performs an SQL + Machine Learning analysis pipeline, displaying trends about personal gym data. 
 
-This is an active personal learning project, inspired by a passion for Data Science and curiosity about how to implement its tools to improve my gym habits. Current model outputs should be interpreted as exploratory analytics rather than training, medical, or injury-prevention advice.
+This is an active personal learning project, inspired by a passion for Data Science and curiosity about how to implement its tools to improve my gym habits. The outputs should be interpreted as exploratory analytics rather than training, medical, or injury-prevention advice.
 
-
+![](images/screen_record_dashboard.gif)
 
 # Project status
 The current version is a learning version and implements an end-to-end analytics pipeline for personal gym data:
@@ -61,7 +61,8 @@ The no-change baseline assumes: ```next performance = current performance```. Me
 SQL is used to create the analytical data model. The main database objects include:
 
 | Object | Purpose | 
-|---|---| | `workouts` | Raw imported workout data |
+|---|---| 
+| `workouts` | Raw imported workout data |
 | `cleaned_workouts` | Cleaned and typed workout records | | `set_metrics` | Set-level volume and estimated 1RM | 
 | `exercise_summary` | Historical exercise summaries | 
 | `exercise_weekly` | Weekly exercise-level metrics |
@@ -97,7 +98,9 @@ Additional validation information should include:
 - Number of historical predictions
 - Model window size
 - Minimum observations required
--  Exercises where the model beat the baseline A model that does not beat the baseline can still provide useful descriptive trend information.
+-  Exercises where the model beat the baseline.
+
+A model that does not beat the baseline can still provide useful descriptive trend information.
 
 ## Setup 
 
@@ -105,7 +108,7 @@ Additional validation information should include:
 - Python 3
 - SQLite
 - pip
-- 
+
 1. Clone the repository: ```bash git clone https://github.com/YOUR_USERNAME/gymdata.git cd gymdata ```
 2. Create and activate a virtual environment: ```bash python3 -m venv .venv source .venv/bin/activate ```
 3. Install dependencies: ```bash pip install -r requirements.txt ```
@@ -167,10 +170,11 @@ The current version has several limitations:
 - Regularized regression models
 - Comparison with tree-based models
 - Improved dashboard navigation and filters
-- Optional natural-language summaries of analytical results - Public Streamlit deployment
+- Optional natural-language summaries of analytical results
+- Public Streamlit deployment
 
 ## Disclaimer 
 
-My original personal workout dataset is not included in this repository. However, the demonstrative video is based on my personal gym data. The included sample data is synthetic. 
+My original personal workout dataset is not included in this repository. However, the demonstrative gif is indeed based on my personal gym data. The included sample data is synthetic. 
 
 
