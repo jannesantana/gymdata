@@ -73,7 +73,7 @@ The SQL scripts are executed in numerical order during the database build.
 
 ## Machine-Learning approach 
 
-The preliminary model fits a separate linear regression for each exercise. The model uses the most recent recorded weekly estimated 1RM observations: ```text weekly estimated 1RM = intercept + slope × observation index ``` .
+The preliminary model fits a separate linear regression for each exercise. The model uses the most recent recorded weekly estimated 1RM observations: ```weekly estimated 1RM = intercept + slope × observation index ``` .
 
 The slope is used as a recent progression indicator: 
 
@@ -109,15 +109,15 @@ A model that does not beat the baseline can still provide useful descriptive tre
 - SQLite
 - pip
 
-1. Clone the repository: ```bash git clone https://github.com/YOUR_USERNAME/gymdata.git cd gymdata ```
-2. Create and activate a virtual environment: ```bash python3 -m venv .venv source .venv/bin/activate ```
-3. Install dependencies: ```bash pip install -r requirements.txt ```
+1. Clone the repository: ```git clone https://github.com/YOUR_USERNAME/gymdata.git cd gymdata ```
+2. Create and activate a virtual environment: ```python3 -m venv .venv source .venv/bin/activate ```
+3. Install dependencies: ```pip install -r requirements.txt ```
 
 ## Usage 
-1. Run the complete pipeline using the sample dataset: ```bash python src/run_pipeline.py \ --input data/sample_gym.csv \ --database data/gym.db ```
-2. Start the Streamlit dashboard: ```bash streamlit run app/app.py -- \ --database data/gym.db ```
+1. Run the complete pipeline using the sample dataset: ```python src/run_pipeline.py \ --input data/sample_gym.csv \ --database data/gym.db ```
+2. Start the Streamlit dashboard: ```streamlit run app/app.py -- \ --database data/gym.db ```
 
-Streamlit will print the local dashboard address in the terminal. To use another CSV file: ```bash python src/run_pipeline.py \ --input "/path/to/workout_data.csv" \ --database data/gym.db ``` 
+Streamlit will print the local dashboard address in the terminal. To use another CSV file: ```python src/run_pipeline.py \ --input "/path/to/workout_data.csv" \ --database data/gym.db ``` 
 
 The input CSV is expected to contain columns similar to: 
 
