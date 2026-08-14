@@ -7,6 +7,7 @@ from pathlib import Path
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+import plotly.graph_objects as go
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -59,41 +60,107 @@ progress = load_table("dashboard_exercise_progress",DATABASE_PATH_STRING)
 workouts = load_table("workout_summary",DATABASE_PATH_STRING)
 validation = load_table("ML_forecast_summary",DATABASE_PATH_STRING)
 
-
-
 selected_exercises = st.selectbox("Exercise",sorted(weekly["exercise_name"].dropna().unique()),)
+
+# weekly exercise plot
 
 exercise_data = weekly[weekly["exercise_name"]== selected_exercises].copy()
 
 figure = px.line(exercise_data,x = "training_week",y = "weekly_best_1rm",markers=True,title=f"{selected_exercises}: weekly estimated 1RM",)
+figure.update_xaxes(type = "category", title_text = "Year-Week")
+figure.update_yaxes(title_text = "Weekly best 1 Rep Max")
+
+
+figure.update_traces(hovertemplate= "Year-Week: %{x}<br>"
+        "1RM: %{y:.2f}""<extra></extra>")
 
 st.plotly_chart(figure,width='stretch')
 
-st.subheader("Exercises furthest below historical best")
 
-st.dataframe(progress.sort_values("pct_of_best"),width='content',)
+# exercises very below historical best
 
-st.subheader("Recent exercise trends")
 
-trend_table = progress[["exercise_name", "pct_of_best", "recent_training_days", "trend_slope", "predicted_next_1rm","training_r2"]].sort_values("trend_slope")
+st.subheader("Progress and model results")
 
-st.dataframe(trend_table,width='stretch')
+st.dataframe(progress.sort_values("pct_of_best"),width='content',column_config={
+        "exercise_name": "Exercise",
+        "total_training_days": "Total Training Days",
+        "recent_training_days": "Recent Training Days",
+        "recent_best": "Recent Best (kg)",
+        "all_time_best": "All Time Best (kg)",
+        "pct_of_best": " % from best",
+        "model_n_weeks": "Weeks window size"+"\n" +"for model",
+        "current_weekly_best_1rm": "Current 1RM",
+        "trend_slope": "Model Trend Slope",
+        "predicted_next_1rm": "Projected next 1RM",
+        "training_r2": "Training R²",
+        "model_name": "Model Name"
+    })
 
-figure = px.scatter(progress,x="pct_of_best",y="trend_slope", size="recent_training_days",hover_name="exercise_name",title="Recent performance level versus trend",)
+
+# slope trend from model lift vs % from best lift 
+
+figure = px.scatter(
+    progress,
+    x="pct_of_best",
+    y="trend_slope",
+    size="recent_training_days",
+    hover_name="exercise_name",
+    hover_data=["recent_training_days"],
+    labels={
+        "pct_of_best": " % from best",
+        "trend_slope": " Trend Slope",
+        "recent_training_days": " Recent Training Days",
+        "exercise_name": "Exercise Name",
+    },
+    title="Recent performance level vs trend",
+)
+
+figure.update_layout(
+    xaxis_title="% of best lift",
+    yaxis_title="Linear Trend Slope"
+)
 
 st.plotly_chart(figure,width='stretch',)
 
 st.subheader("Forecast validation")
 
-st.dataframe(validation.sort_values("mae_improvement_pct",ascending=False),width='stretch')
+st.dataframe(validation.sort_values("mae_improvement_pct",ascending=False),width='stretch',column_config={
+    "exercise_name": "Exercise",
+    "test_predictions": "Test Predictions",
+    "model_mae": "Model MAE",
+    "baseline_mae": "Baseline MAE",
+    "mae_improvement": "MAE Improvement",
+    "mae_improvement_pct": "MAE Improvement (%)",
+    "model_beats_baseline": "Model Beats Baseline",
+})
 
 figure = px.scatter(
     validation,
     x="baseline_mae",
     y="model_mae",
     hover_name="exercise_name",
+    hover_data = ["test_predictions"],
+    labels={"baseline_mae": " Baseline MAE",
+            "model_mae": " Model MAE",
+            "test_predictions": " Test Predictions"},
     size="test_predictions",
     title="Trend model versus naïve baseline",
+)
+
+figure.add_trace(
+    go.Scatter(
+        x=[0, 15],
+        y=[0, 15],
+        mode="lines",
+        line=go.scatter.Line(color="gray"),
+        showlegend=True,
+        name = "y = x")
+)
+
+figure.update_layout(
+    xaxis_title="Baseline MAE",
+    yaxis_title="Model MAE"
 )
 
 st.plotly_chart(

@@ -5,7 +5,7 @@ The user provides a .csv file containing chronological logs of workout sessions 
 
 This is an active personal learning project, inspired by a passion for Data Science and curiosity about how to implement its tools to improve my gym habits. The outputs should be interpreted as exploratory analytics rather than training, medical, or injury-prevention advice.
 
-![](images/screen_record_dashboard.gif)
+![](images/screen_record_demo.gif)
 
 # Project status
 The current version is a learning version and implements an end-to-end analytics pipeline for personal gym data:
